@@ -33,12 +33,14 @@ void SystemClock_Config(void);
  *
  * @param1 - received sign
  */
-void proccesDmaData(const uint8_t* data, uint16_t len); 			// uint8_t data
+void proccesDmaData(const uint8_t* data, uint16_t len);
 
 
 /* Space for your global variables. */
 
 	// type your global variables here:
+
+
 
 
 int main(void)
@@ -60,6 +62,8 @@ int main(void)
   /* Space for your local variables, callback registration ...*/
 
   	  //type your code here:
+  USART2_RegisterCallback(proccesDmaData);
+
 
   while (1)
   {
@@ -70,6 +74,15 @@ int main(void)
 	   */
 
   	  	  	  //type your code here:
+		#if POLLING
+	  	//Polling for new data, no interrupts
+	  		USART2_CheckDmaReception();
+	  		LL_mDelay(10);
+		#else
+	  		USART2_PutBuffer(tx_data, sizeof(tx_data));
+	  		LL_mDelay(1000);
+		#endif
+
   }
   /* USER CODE END 3 */
 }
@@ -109,14 +122,17 @@ void SystemClock_Config(void)
 /*
  * Implementation of function processing data received via USART.
  */
-void proccesDmaData(const uint8_t* data, uint16_t len) 			// uint8_t data
+void proccesDmaData(const uint8_t* data, uint16_t len)
 {
 	/* Process received data */
-	int start = 0;
-	int count = 0;
-	int capL = 0;
-	int lowL = 0;
+
 		// type your algorithm here:
+
+	  static int start = 0;
+	  static int count = 0;
+	  static int capL = 0;
+	  static int lowL = 0;
+
 
 	for(uint8_t i = 0; i < len; i++)
 	{
@@ -128,14 +144,19 @@ void proccesDmaData(const uint8_t* data, uint16_t len) 			// uint8_t data
 		{
 			start = 0;
 			count = 0;
+			lowL = 0;
+		    capL = 0;
 		}
 
 		if(start == 1)
 		{
 			count++;
-			if(count == 34)
+			if(count >= 34)
 			{
+				start = 0;
 				count = 0;
+				lowL = 0;
+				capL = 0;
 			}
 			else
 			{
