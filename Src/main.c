@@ -39,7 +39,10 @@ void proccesDmaData(const uint8_t* data, uint16_t len);
 /* Space for your global variables. */
 
 	// type your global variables here:
-
+	int start = 0;
+	int count = 0;
+	int capL = 0;
+	int lowL = 0;
 
 
 
@@ -82,6 +85,11 @@ int main(void)
 	  		USART2_PutBuffer(tx_data, sizeof(tx_data));
 	  		LL_mDelay(1000);
 		#endif
+
+
+
+	  	LL_mDelay(200);
+
 
   }
   /* USER CODE END 3 */
@@ -127,12 +135,6 @@ void proccesDmaData(const uint8_t* data, uint16_t len)
 	/* Process received data */
 
 		// type your algorithm here:
-
-	  static int start = 0;
-	  static int count = 0;
-	  static int capL = 0;
-	  static int lowL = 0;
-
 
 	for(uint8_t i = 0; i < len; i++)
 	{

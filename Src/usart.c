@@ -19,12 +19,13 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
+#include <string.h>
 
 /* Memory buffer used directly by DMA for USART Rx*/
 uint8_t bufferUSART2dma[DMA_USART2_BUFFER_SIZE];
 
 /* Declaration and initialization of callback function */
-static void (* USART2_ProcessData)(const uint8_t* data, uint16_t len) = 0; 			//uint8_t data
+static void (* USART2_ProcessData)(const uint8_t* data, uint16_t len) = 0;
 
 /* Register callback */
 void USART2_RegisterCallback(void *callback)
@@ -154,6 +155,7 @@ void USART2_PutBuffer(uint8_t *buffer, uint8_t length)
  *	Keeps track of pointer pointing to Rx memory buffer and resets the pointer if overflow is possible in next Rx.
  *	Refer to reference manual - "normal memory mode" and "increment memory mode".
  */
+
 void USART2_CheckDmaReception(void)
 {
 	//type your implementation here
@@ -165,26 +167,30 @@ void USART2_CheckDmaReception(void)
 
 		if (pos != old_pos)
 		{
-			if (pos > old_pos)
+			if (pos < (DMA_USART2_BUFFER_SIZE-20))
 			{
 				USART2_ProcessData(&bufferUSART2dma[old_pos], pos - old_pos);
+				old_pos = pos;
 			}
 			else
 			{
 				USART2_ProcessData(&bufferUSART2dma[old_pos], DMA_USART2_BUFFER_SIZE - old_pos);
 
-				if (pos > 0)
-				{
-					USART2_ProcessData(&bufferUSART2dma[0], pos);
-				}
+				memset(bufferUSART2dma, 0, DMA_USART2_BUFFER_SIZE);
+
+				LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_6);
+				LL_DMA_ConfigAddresses(    DMA1, LL_DMA_CHANNEL_6,
+				LL_USART_DMA_GetRegAddr(USART2, LL_USART_DMA_REG_DATA_RECEIVE),
+				(uint32_t)bufferUSART2dma,
+				LL_DMA_GetDataTransferDirection(DMA1, LL_DMA_CHANNEL_6));
+
+				LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_6, DMA_USART2_BUFFER_SIZE);
+				LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_6);
+				LL_USART_EnableDMAReq_RX(USART2);
+
+				old_pos = 0;
+
 			}
-		}
-
-		old_pos = pos;
-
-		if (old_pos == DMA_USART2_BUFFER_SIZE)
-		{
-			old_pos = 0;
 		}
 }
 
