@@ -33,7 +33,7 @@ void SystemClock_Config(void);
  *
  * @param1 - received sign
  */
-void proccesDmaData(uint8_t sign);
+void proccesDmaData(const uint8_t* data, uint16_t len); 			// uint8_t data
 
 
 /* Space for your global variables. */
@@ -109,11 +109,50 @@ void SystemClock_Config(void)
 /*
  * Implementation of function processing data received via USART.
  */
-void proccesDmaData(uint8_t sign)
+void proccesDmaData(const uint8_t* data, uint16_t len) 			// uint8_t data
 {
 	/* Process received data */
-
+	int start = 0;
+	int count = 0;
+	int capL = 0;
+	int lowL = 0;
 		// type your algorithm here:
+
+	for(uint8_t i = 0; i < len; i++)
+	{
+		if(*(data+i) == '#')
+		{
+			start = 1;
+		}
+		else if(*(data+i) == '$')
+		{
+			start = 0;
+			count = 0;
+		}
+
+		if(start == 1)
+		{
+			count++;
+			if(count == 34)
+			{
+				count = 0;
+			}
+			else
+			{
+				if(*(data+i) > 96 && *(data+i) < 123)
+				{
+					lowL++;
+				}
+				if(*(data+i) > 64 && *(data+i) < 91)
+				{
+					capL++;
+				}
+			}
+
+		}
+
+
+	}
 }
 
 
