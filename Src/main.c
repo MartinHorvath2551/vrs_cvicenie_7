@@ -108,8 +108,6 @@ int main(void)
 		sprintf(tx_data2, "%d", occupied_memory);
 		sprintf(tx_data3, "%d", (int)load);
 
-
-
 		strcat(tx_data, tx_data1);
 		strcat(tx_data, tx_data2);
 		strcat(tx_data, tx_data3);

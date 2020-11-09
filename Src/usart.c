@@ -165,8 +165,8 @@ void USART2_CheckDmaReception(void)
 
 		uint16_t pos = DMA_USART2_BUFFER_SIZE - LL_DMA_GetDataLength(DMA1, LL_DMA_CHANNEL_6);
 
-		occupied_memory=DMA_USART2_BUFFER_SIZE-pos;
-		load=occupied_memory/DMA_USART2_BUFFER_SIZE*100.0;
+		occupied_memory=pos;
+		load=(float)(occupied_memory)/(float)(DMA_USART2_BUFFER_SIZE)*100.0;
 
 		if (pos != old_pos)
 		{
