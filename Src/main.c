@@ -23,6 +23,8 @@
 #include "dma.h"
 #include "usart.h"
 #include "gpio.h"
+#include <stdio.h>
+#include <string.h>
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -37,6 +39,10 @@ void proccesDmaData(const uint8_t* data, uint16_t len);
 
 
 /* Space for your global variables. */
+
+
+
+
 
 	// type your global variables here:
 	int start = 0;
@@ -64,12 +70,19 @@ int main(void)
 
   /* Space for your local variables, callback registration ...*/
 
+
+
+
+
   	  //type your code here:
   USART2_RegisterCallback(proccesDmaData);
 
-
   while (1)
   {
+
+
+
+
 	  /* Periodic transmission of information about DMA Rx buffer state.
 	   * Transmission frequency - 5Hz.
 	   * Message format - "Buffer capacity: %d bytes, occupied memory: %d bytes, load [in %]: %f%"
@@ -86,7 +99,24 @@ int main(void)
 	  		LL_mDelay(1000);
 		#endif
 
+		uint8_t tx_data[] = "";
+		uint8_t tx_data1[] = "Buffer capacity: 256";
+		uint8_t tx_data2[] = " bytes, occupied memory: ";
+		uint8_t tx_data3[] = " bytes, load [in %]: ";
+		uint8_t tx_data4[] = "%";
 
+		sprintf(tx_data2, "%d", occupied_memory);
+		sprintf(tx_data3, "%d", (int)load);
+
+
+
+		strcat(tx_data, tx_data1);
+		strcat(tx_data, tx_data2);
+		strcat(tx_data, tx_data3);
+		strcat(tx_data, tx_data4);
+
+
+		USART2_PutBuffer(tx_data, sizeof(tx_data));
 
 	  	LL_mDelay(200);
 
