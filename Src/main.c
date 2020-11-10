@@ -71,16 +71,21 @@ int main(void)
   /* Space for your local variables, callback registration ...*/
 
 
-  uint8_t tx_data[1000];
-  uint8_t tx_data1[] = " Buffer capacity: 256";
+  uint8_t tx_data[500];
+  uint8_t tx_data1[] = " Buffer capacity: ";
   uint8_t tx_data2[] = " bytes, occupied memory: ";
 
   uint8_t tx_data3[] = " bytes, load [in %]: ";
 
   uint8_t tx_data4[] = "%\r\n";
 
-  char used_memory_string[4] = "0";
-  char load_string[4] = "0";
+  char buffer_size_string[4];
+  char used_memory_string[3];
+  char load_string[3];
+  uint8_t buffer_size_int = DMA_USART2_BUFFER_SIZE;
+  sprintf(buffer_size_string, "%d", buffer_size_int);
+
+
   	  //type your code here:
   USART2_RegisterCallback(proccesDmaData);
 
@@ -104,13 +109,13 @@ int main(void)
 	  		LL_mDelay(1000);
 		#endif
 
-		memset(tx_data,0,1000);
+		memset(tx_data,0,500);
 
 		sprintf(used_memory_string, "%d", occupied_memory);
-		//sprintf(load_string, "%d", (int)load);
 		gcvt(load, 4, load_string);
 
 		strcat(tx_data, tx_data1);
+		strcat(tx_data, buffer_size_string);
 		strcat(tx_data, tx_data2);
 		strcat(tx_data, used_memory_string);
 		strcat(tx_data, tx_data3);
