@@ -72,7 +72,7 @@ int main(void)
 
 
   uint8_t tx_data[1000];
-  uint8_t tx_data1[] = " Buffer capacity: ";
+  uint8_t tx_data1[] = "Buffer capacity: ";
   uint8_t tx_data2[] = " bytes, occupied memory: ";
 
   uint8_t tx_data3[] = " bytes, load [in %]: ";
@@ -109,19 +109,28 @@ int main(void)
 	  		LL_mDelay(1000);
 		#endif
 
-		memset(tx_data,0,1000);
+		//memset(tx_data,0,1000);
 
 		sprintf(used_memory_string, "%d", occupied_memory);
 		//itoa(occupied_memory, used_memory_string, 10);
 		gcvt(load, 4, load_string);
 
-		strcat(tx_data, tx_data1);
-		strcat(tx_data, buffer_size_string);
+		//strcat(tx_data, tx_data1);
+
+		USART2_PutBuffer(tx_data1, sizeof(tx_data1));
+		USART2_PutBuffer(buffer_size_string, sizeof(buffer_size_string));
+		USART2_PutBuffer(tx_data2, sizeof(tx_data2));
+		USART2_PutBuffer(used_memory_string, sizeof(used_memory_string));
+		USART2_PutBuffer(tx_data3, sizeof(tx_data3));
+		USART2_PutBuffer(load_string, sizeof(load_string));
+		USART2_PutBuffer(tx_data4, sizeof(tx_data4));
+
+		/*strcat(tx_data, buffer_size_string);
 		strcat(tx_data, tx_data2);
 		strcat(tx_data, used_memory_string);
 		strcat(tx_data, tx_data3);
 		strcat(tx_data, load_string);
-		strcat(tx_data, tx_data4);
+		strcat(tx_data, tx_data4);*/
 
 
 		if(test)
@@ -129,7 +138,7 @@ int main(void)
 			USART2_PutBuffer(test_message, sizeof(test_message));
 		}
 
-		 USART2_PutBuffer(tx_data, sizeof(tx_data));
+		 //USART2_PutBuffer(tx_data, sizeof(tx_data));
 
 	  	LL_mDelay(200);
 
