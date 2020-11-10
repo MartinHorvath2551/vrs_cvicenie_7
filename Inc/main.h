@@ -75,7 +75,7 @@ typedef struct
 #endif /* __MAIN_H */
 
 uint8_t Buffer_capacity;
-uint8_t occupied_memory;
+uint16_t occupied_memory;
 float load;
 
 

@@ -41,8 +41,6 @@ void proccesDmaData(const uint8_t* data, uint16_t len);
 /* Space for your global variables. */
 
 
-	int test= 0;
-	uint8_t test_message[] = "Print this message if works";
 
 	// type your global variables here:
 	int start = 0;
@@ -80,7 +78,7 @@ int main(void)
   uint8_t tx_data4[] = "%\r\n";
 
   char buffer_size_string[4];
-  char used_memory_string[10];
+  char used_memory_string[4];
   char load_string[3];
   int buffer_size_int = DMA_USART2_BUFFER_SIZE;
   sprintf(buffer_size_string, "%d", buffer_size_int);
@@ -109,38 +107,27 @@ int main(void)
 	  		LL_mDelay(1000);
 		#endif
 
-		//memset(tx_data,0,1000);
+
 
 		sprintf(used_memory_string, "%d", occupied_memory);
-		//itoa(occupied_memory, used_memory_string, 10);
+
 		gcvt(load, 4, load_string);
 
-		//strcat(tx_data, tx_data1);
-
-		USART2_PutBuffer(tx_data1, sizeof(tx_data1));
+	    USART2_PutBuffer(tx_data1, sizeof(tx_data1));
+		LL_mDelay(500);
 		USART2_PutBuffer(buffer_size_string, sizeof(buffer_size_string));
+		LL_mDelay(500);
 		USART2_PutBuffer(tx_data2, sizeof(tx_data2));
+		LL_mDelay(500);
 		USART2_PutBuffer(used_memory_string, sizeof(used_memory_string));
+		LL_mDelay(500);
 		USART2_PutBuffer(tx_data3, sizeof(tx_data3));
+		LL_mDelay(500);
 		USART2_PutBuffer(load_string, sizeof(load_string));
+		LL_mDelay(500);
 		USART2_PutBuffer(tx_data4, sizeof(tx_data4));
+		LL_mDelay(500);
 
-		/*strcat(tx_data, buffer_size_string);
-		strcat(tx_data, tx_data2);
-		strcat(tx_data, used_memory_string);
-		strcat(tx_data, tx_data3);
-		strcat(tx_data, load_string);
-		strcat(tx_data, tx_data4);*/
-
-
-		if(test)
-		{
-			USART2_PutBuffer(test_message, sizeof(test_message));
-		}
-
-		 //USART2_PutBuffer(tx_data, sizeof(tx_data));
-
-	  	LL_mDelay(200);
 
 
   }
