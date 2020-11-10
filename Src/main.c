@@ -106,8 +106,8 @@ int main(void)
 	  		LL_mDelay(1000);
 		#endif
 
-		memset(tx_data,0,400);
-
+		//memset(tx_data,0,1000);
+		strcpy(tx_data,"");
 
 		sprintf(used_memory_string, "%d", occupied_memory);
 		sprintf(load_string, "%d", (int)load);
@@ -128,7 +128,7 @@ int main(void)
 			USART2_PutBuffer(test_message, sizeof(test_message));
 		}
 
-		USART2_PutBuffer(tx_data, sizeof(tx_data));
+		 USART2_PutBuffer(tx_data, sizeof(tx_data));
 
 	  	LL_mDelay(200);
 
