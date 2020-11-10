@@ -71,13 +71,13 @@ int main(void)
   /* Space for your local variables, callback registration ...*/
 
 
-  uint8_t tx_data[] = "";
-  uint8_t tx_data1[] = "Buffer capacity: 256";
+  uint8_t tx_data[1000];
+  uint8_t tx_data1[] = " Buffer capacity: 256";
   uint8_t tx_data2[] = " bytes, occupied memory: ";
 
   uint8_t tx_data3[] = " bytes, load [in %]: ";
 
-  uint8_t tx_data4[] = "%";
+  uint8_t tx_data4[] = "%\r\n";
 
   char used_memory_string[4] = "0";
   char load_string[4] = "0";
@@ -86,8 +86,6 @@ int main(void)
 
   while (1)
   {
-
-
 
 
 	  /* Periodic transmission of information about DMA Rx buffer state.
@@ -106,14 +104,11 @@ int main(void)
 	  		LL_mDelay(1000);
 		#endif
 
-		//memset(tx_data,0,1000);
-		strcpy(tx_data,"");
+		memset(tx_data,0,1000);
 
 		sprintf(used_memory_string, "%d", occupied_memory);
-		sprintf(load_string, "%d", (int)load);
-
-
-
+		//sprintf(load_string, "%d", (int)load);
+		gcvt(load, 4, load_string);
 
 		strcat(tx_data, tx_data1);
 		strcat(tx_data, tx_data2);
