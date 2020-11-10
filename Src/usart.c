@@ -178,7 +178,7 @@ void USART2_CheckDmaReception(void)
 			else
 			{
 
-				old_pos = 0;
+
 
 				USART2_ProcessData(&bufferUSART2dma[old_pos], DMA_USART2_BUFFER_SIZE - old_pos);
 				//clear bufferUSART2dma
@@ -194,6 +194,9 @@ void USART2_CheckDmaReception(void)
 				//lastly enabled
 				LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_6);
 				LL_USART_EnableDMAReq_RX(USART2);
+
+
+				old_pos = 0;
 
 			}
 		}
