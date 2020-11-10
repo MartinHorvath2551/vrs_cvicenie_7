@@ -41,8 +41,8 @@ void proccesDmaData(const uint8_t* data, uint16_t len);
 /* Space for your global variables. */
 
 
-
-
+	int test= 0;
+	uint8_t test_message[] = "Print this message if works";
 
 	// type your global variables here:
 	int start = 0;
@@ -71,9 +71,16 @@ int main(void)
   /* Space for your local variables, callback registration ...*/
 
 
+  uint8_t tx_data[] = "";
+  uint8_t tx_data1[] = "Buffer capacity: 256";
+  uint8_t tx_data2[] = " bytes, occupied memory: ";
 
+  uint8_t tx_data3[] = " bytes, load [in %]: ";
 
+  uint8_t tx_data4[] = "%";
 
+  char used_memory_string[4] = "0";
+  char load_string[4] = "0";
   	  //type your code here:
   USART2_RegisterCallback(proccesDmaData);
 
@@ -99,20 +106,27 @@ int main(void)
 	  		LL_mDelay(1000);
 		#endif
 
-		uint8_t tx_data[] = "";
-		uint8_t tx_data1[] = "Buffer capacity: 256";
-		uint8_t tx_data2[] = " bytes, occupied memory: ";
-		uint8_t tx_data3[] = " bytes, load [in %]: ";
-		uint8_t tx_data4[] = "%";
+		memset(tx_data,0,400);
 
-		sprintf(tx_data2, "%d", occupied_memory);
-		sprintf(tx_data3, "%d", (int)load);
+
+		sprintf(used_memory_string, "%d", occupied_memory);
+		sprintf(load_string, "%d", (int)load);
+
+
+
 
 		strcat(tx_data, tx_data1);
 		strcat(tx_data, tx_data2);
+		strcat(tx_data, used_memory_string);
 		strcat(tx_data, tx_data3);
+		strcat(tx_data, load_string);
 		strcat(tx_data, tx_data4);
 
+
+		if(test)
+		{
+			USART2_PutBuffer(test_message, sizeof(test_message));
+		}
 
 		USART2_PutBuffer(tx_data, sizeof(tx_data));
 
